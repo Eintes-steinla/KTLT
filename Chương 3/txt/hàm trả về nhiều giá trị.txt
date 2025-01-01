@@ -1,0 +1,52 @@
+Khi bạn muốn tạo một hàm trả về nhiều giá trị bạn có thể làm cách sau
+// cách 1
+std::array<int, 2> cal(int x) {
+    std::array<int, 2> a = {x * 2, x * 4};
+    return a;
+}
+// cách 2
+int* cal(int x)
+{
+//	static int a[2]; // nguy cơ chứa lỗi tiềm ẩn
+	int* a = new int[2];
+	a[0] = x * 2;
+	a[1] = x * 4;
+	return a;
+}
+int main()
+{
+	int* a = cal(5); // cách 1
+	std::array<int, 2> a = cal(5); // cách 2
+	cout << a[0] << endl;
+	cout << a[1] << endl;
+	return 0;
+}
+
+/*
+	GT Cách 1
+ở cách 1 bạn có thể sử dụng thư viện stl của C++
+Mỗi lần bạn gọi cal, nó sẽ tạo ra một đối tượng std::array mới, không liên quan đến bất kỳ đối tượng nào khác. 
+    std::array<int, 2> a1 = cal(5); // Tạo một mảng mới với {10, 20}
+    std::array<int, 2> a2 = cal(10); // Tạo một mảng mới với {20, 40}
+    std::cout << a1[0] << " " << a1[1] << std::endl; // Kết quả: 10 20
+    std::cout << a2[0] << " " << a2[1] << std::endl; // Kết quả: 20 40
+Mỗi đối tượng std::array ở đây là riêng biệt, không ảnh hưởng lẫn nhau.
+Không có dữ liệu dùng chung giữa các lần gọi hàm, đảm bảo tính độc lập và an toàn bộ nhớ.
+
+	GT Cách 2
+ở đây bạn tạo một bộ nhớ động trong bộ nhớ heap bằng cách
+    int* a = new int[2];
+bạn cấp phát cho mảng 2 ô nhớ tương ứng với a[0] và a[1]
+cách này để tránh lỗi tiềm ẩn (Undefined Behavior)
+dữ liệu ở đây sẽ tồn tại lâu hơn
+
+ở dòng
+static int a[2]; // nguy cơ chứa lỗi tiềm ẩn
+khi bạn khai báo với từ khóa static mảng sẽ nằm ở vùng dữ liệu tĩnh (static storage)
+mặc dù mảng a sẽ tồn tại trong suốt vòng đời của chương trình, ngay cả sau khi hàm cal kết thúc
+nhưng khi bạn gọi lại hàm cal  với giá trị khác, nội dung của mảng a sẽ bị ghi đè, và dữ liệu trước đó có thể bị thay đổi. Điều này dễ dẫn đến lỗi logic hoặc hành vi không mong muốn trong các chương trình lớn.
+    int* a1 = cal(5); // a[0] = 10, a[1] = 20
+    int* a2 = cal(10); // a[0] = 20, a[1] = 40 (ghi đè)
+    cout << a1[0] << " " << a1[1] << endl; // Kết quả không còn là 10, 20
+
+*/

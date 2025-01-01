@@ -1,0 +1,78 @@
+Nên truyền tham trị hay tham chiếu trong C++
+
+tôi có một ví dụ đơn giản như sau
+TRUYỀN THAM TRỊ
+Code:
+    #include <iostream>
+    using namespace std;
+
+    int Square(int a)
+    {
+        a = a * a;
+    	return a;
+    }
+
+    int main() {
+        int a;
+        cout << "a = "; cin >> a;
+        cout << "Truoc khi thay doi: " << a << endl;
+        Square(a);
+        cout << "Sau khi thay doi: " << a << endl;
+        return 0;
+    }
+Output:
+    a = 2
+    Truoc khi thay doi: 2
+    Sau khi thay doi: 2
+/* Đoạn code trên là truyền tham trị, nghĩa là chương trình sẽ tạo ra một bản sao của a và truyền vào hàm Square bản sao đó.
+Chương trình sẽ tốn thêm bộ nhớ để lưu lại bản sao đó.
+Khi ta thao tác trên hàm Square thì giá trị của a không bị thay đổi vì ta chỉ đang thao tác trên bản sao của a. */
+
+TRUYỀN THAM CHIẾU
+    #include <iostream>
+    using namespace std;
+
+    int Square(int &a)
+    {
+        a = a * a;
+        return a;
+    }
+
+    int main() {
+        int a;
+        cout << "a = "; cin >> a;
+        cout << "Truoc khi thay doi: " << a << endl;
+        Square(a);
+        cout << "Sau khi thay doi: " << a << endl;
+        return 0;
+    }
+Output:
+    a = 2
+    Truoc khi thay doi: 2
+    Sau khi thay doi: 4
+/* Đoạn code trên là truyền tham chiếu thông qua toán tử địa chỉ &.
+Truyền trực tiếp địa chỉ của biến int a; và thao tác hàm Square trực tiếp trên biến a luôn.
+Khi thay đổi a trong hàm Square thì a thay đổi theo. */
+
+Thông qua hai ví dụ trên ta có thể rút ra những điều sau
+1: Nếu bạn muốn giữ nguyên giá trị ban đầu của đối số truyền vào hàm thì truyền tham trị
+2: Thay đổi giá trị của đối số truyền vào thì truyền tham chiếu
+
+Nhưng nếu chương trình của bạn có dữ liệu rất lớn thì sao?
+- Với dữ liệu lớn việc truyền tham trị sẽ tạo ra rất nhiều bản copy gây lãng phí bộ nhớ cũng như tốn thêm thời gian xử lý của chương trình.
+- Lúc này sử dụng truyền tham chiếu sẽ giảm thiểu được 2 điều đó
+  Tuy nhiên bạn lại không muốn thay đổi giá trị của đối số truyền vào:))
+  Vậy chúng ta phải làm sao để không tốn bộ nhớ cũng như thời gian xử lý của chương trình mà vẫn đảm bảo tính đúng đắn của dữ liệu?
+  Lúc này chúng ta sẽ sử dụng từ khóa const trước tham số trong hàm
+Code:
+    int Square(const int &a)
+    {
+        return a * a;
+    }
+
+Khi sử dụng từ khóa const thì đối số a được truyền vào sẽ ở chế độ chỉ đọc, tức là nếu bạn cố gắng thay đổi giá trị của a thì chương trình sẽ bị lỗi.
+Tuy nhiên bạn có thể thao tác với một biến trung gian hoặc trả về một biểu thức để cho ra kết quả mong muốn.
+điều này nằm ở nhu cầu sử dụng của bạn:))
+
+Cảm ơn bạn đã đọc
+

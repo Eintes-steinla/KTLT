@@ -1,0 +1,94 @@
+Hàm Con trỏ
+
+Mỗi hàm đều được lưu trữ với địa chỉ riêng trong bộ nhớ ảo
+
+Để in ra địa chỉ của hàm thì dùng chính tên hàm
+Code:
+    int diaChi()
+    {
+        return 0;
+    }
+    int main()
+    {
+        cout << diaChi << endl;
+        return 0;
+    }
+Output:
+    013D1492
+
+Cú pháp:
+    <return_type> (*<name_of_ptr>)(<data_type_of_parameters>);
+
+Bạn có thể sử dụng con trỏ hàm tương tự việc bạn sử dụng con trỏ đối với số hay đối tượng vậy
+Code:
+    #include <iostream>
+    using namespace std;
+
+    void sayHello() {
+        cout << "Hello, world!" << endl;
+    }
+
+    void sayGoodbye() {
+        cout << "Goodbye, world!" << endl;
+    }
+
+    void executeCallback(void (*callback)()) {
+        callback();
+    }
+
+    int main() {
+        executeCallback(sayHello);  // Gọi hàm sayHello
+        executeCallback(sayGoodbye); // Gọi hàm sayGoodbye
+        return 0;
+    }
+
+Con trỏ hàm giúp tăng tính linh hoạt của trương trình
+cũng như tiết kiệm công sức của lập trình viên
+
+thay vì bạn phải if else các điều kiện các thứ
+thì bạn chỉ cần gọi tên hàm bạn cần thực hiện
+
+bạn có thể chạy thử đoạn code dưới đây để hiểu hơn
+
+#include <iostream>
+#include <iomanip>
+
+using namespace std;
+
+struct HocSinh
+{
+    string ten;
+    int diem;
+};
+typedef struct HocSinh hs;
+
+bool cao(int a, int b)
+{
+    if(a > b)
+        return true;
+    return false;
+}
+bool thap(int a, int b)
+{
+    if(a < b)
+        return true;
+    return false;
+}
+
+void gioiHon(hs x, hs y, bool(*compare) (int, int))
+{
+    if(compare(x.diem, y.diem))
+        cout << "Ten: " << x.ten << "\nDiem: " << fixed << setprecision(2) << x.diem << endl;
+    else
+        cout << "Ten: " << y.ten << "\nDiem: " << fixed << setprecision(2) << y.diem << endl;
+}
+
+int main()
+{
+    hs hs1 = {"Nguyen Van A", 9};
+    hs hs2 = {"Nguyen Van B", 6};
+    gioiHon(hs1, hs2, cao);
+    return 0;
+}
+
+không dùng con trỏ hàm với các hàm có tham số ngầm định được

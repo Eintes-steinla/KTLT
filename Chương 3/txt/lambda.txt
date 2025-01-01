@@ -1,0 +1,83 @@
+Hàm nặc danh - cú pháp lambda
+
+Định nghĩa
+Lambda hay còn gọi là hàm nặc danh, nó có thể dùng để truyền vào một hàm khác và sử dụng một lần.
+Khác với các cách dùng hàm thông thường buộc phải định nghĩa hàm sau đó dùng tên hàm truyền vào một hàm khác.
+Bạn có thể thao tác trực tiếp bằng cách sử dụng hàm nặc danh nhưng thường chỉ sử dụng cho các tác vụ nhỏ.
+
+Cú pháp:
+    [capture_clause](parameters) -> return_type {
+        function_body
+    };
+capture_clause (phần capture): Xác định các biến bên ngoài mà lambda có thể truy cập.
+parameters (tham số): Danh sách tham số giống như hàm thông thường.
+return_type (kiểu trả về): (tùy chọn) Xác định kiểu giá trị trả về. Nếu không khai báo, trình biên dịch sẽ suy luận.
+function_body (nội dung hàm): Định nghĩa logic của lambda.
+
+Code:
+    #include <iostream>
+    using namespace std;
+
+    int main() {
+        auto sum = [](int a, int b) -> int {
+            return a + b;
+        };
+
+        cout << "Sum of 3 and 5: " << sum(3, 5) << endl;
+        return 0;
+    }
+Output:
+    Sum of 3 and 5: 8
+
+Phần Capture (capture_clause)
+1. Không capture []
+Lambda không sử dụng biến bên ngoài.
+
+Code:
+    auto hello = []() {
+        cout << "Hello, Lambda!" << endl;
+    };
+    hello();
+
+2. Capture theo giá trị [=]
+Biến bên ngoài được copy vào lambda.
+
+Code:
+    int x = 10;
+    auto printX = [=]() {
+        cout << "x = " << x << endl; // x được copy vào lambda
+    };
+    printX();
+
+3. Capture theo tham chiếu [&] // [&, a, b]
+Biến bên ngoài được tham chiếu, mọi thay đổi sẽ ảnh hưởng trực tiếp đến biến bên ngoài.
+
+Code:
+    int x = 10;
+    auto modifyX = [&]() {
+        x += 5;
+    };
+    modifyX();
+    cout << "x = " << x << endl; // Kết quả: x = 15
+
+4. Capture cụ thể
+Bạn có thể chỉ định cụ thể biến nào được capture theo giá trị hoặc tham chiếu.
+
+Code:
+    int a = 5, b = 10;
+    auto lambda = [a, &b]() {
+        cout << "a = " << a << endl; // a copy
+        b += 5; // b tham chiếu
+    };
+    lambda();
+    cout << "b = " << b << endl; // Kết quả: b = 15
+
+Trong biểu thức lambda, khi một biến được bắt theo giá trị, nó được sao chép vào trong lambda, và mặc định lambda coi các biến đó là const.
+Điều này có nghĩa là bạn không thể sửa đổi giá trị của chúng bên trong thân lambda.
+Nếu bạn muốn sửa đổi giá trị của các biến bắt theo giá trị, bạn cần thêm từ khóa mutable vào khai báo lambda.
+Cú pháp
+
+Code:
+    [<capture>](<parameters>) mutable { <body> };
+
+thật ra cái này tôi cũng k sử dụng nhiều lắm vì nó cũng hơi oằn tà là voằn ấy:))

@@ -1,0 +1,228 @@
+Đa năng hóa toán tử (Operator Overloading) trong C++ 
+
+Nếu bạn đã từng học qua OOP thì chắc hẳn bạn đã biết tới Overloading (Nạp chồng hàm)
+Là một tính năng cho phép chúng ta định nghĩa nhiều hàm hay thủ tục với cùng một tên nhưng có khác nhau về các tham số đầu vào hay đầu ra.
+
+Định nghĩa:
+
+    Đa năng hóa toán tử cũng vậy, nó cho phép ta định nghĩa lại một toán tử một ngôi hoặc toán tử hai ngôi.
+    Tuy nhiên đa năng hóa toán tử chỉ hỗ trợ với một số ngôn ngữ lập trình như C++, C#, Kotlin ...
+
+Ý nghĩa:
+    Đa năng hóa toán tử giúp chương trình ngắn gọn, dễ đọc và có ý nghĩa hơn so với việc gọi hàm bình thường.
+
+Cú pháp:
+    <kiểu trả về> operator<toán tử>(<danh sách tham số>) {
+        // Nội dung định nghĩa toán tử
+    }
+
+Chúng ta sẽ làm quen với đa năng hóa toán tử thông qua ví dụ về số phức sau đây
+
+Code:
+    #include <iostream>
+    using namespace std;
+
+    // định nghĩa kiểu cấu trúc số phức
+    struct soPhuc
+    {
+        double thuc;
+        double ao;
+    };
+    // đa năng hóa toán tử +
+    soPhuc operator+(soPhuc &sp1, soPhuc &sp2)
+    {
+        soPhuc sp;
+        sp.thuc = sp1.thuc + sp2.thuc;
+        sp.ao = sp1.ao + sp2.ao;
+        return sp;
+    }
+    // đa năng hóa toán tử -
+    soPhuc operator-(soPhuc &sp1, soPhuc &sp2)
+    {
+        soPhuc sp;
+        sp.thuc = sp1.thuc - sp2.thuc;
+        sp.ao = sp1.ao - sp2.ao;
+        return sp;
+    }
+    // hàm in ra số phức
+    void inSoPhuc(soPhuc &sp)
+    {
+        cout << sp.thuc;
+        if(sp.ao >= 0)
+            cout << " + " << sp.ao << "i\n";
+        else
+            cout << " - " << -sp.ao << "i\n";
+    }
+    // đa năng hóa toán tử <<
+    ostream& operator<<(ostream& out, const soPhuc& sp)
+    {
+        out << sp.thuc;
+        if (sp.ao >= 0)
+            out << " + " << sp.ao << "i\n";
+        else
+            out << " - " << -sp.ao << "i\n";
+        return out;
+    }
+
+    int main()
+    {
+        soPhuc sp1 = {1, 1};
+        soPhuc sp2 = {3, -4};
+        cout << "So phuc 1: " << sp1;
+        cout << "So phuc 2: " << sp2;
+
+        soPhuc tong = sp1 + sp2;
+        cout << "Tong: " << tong;
+        cout << "Tong: ";
+        inSoPhuc(tong);
+
+        soPhuc hieu = sp1 - sp2;
+        cout << "Hieu: " << hieu;
+        cout << "Hieu: ";
+        inSoPhuc(hieu);
+
+        return 0;
+    }
+
+Output:
+    So phuc 1: 1 + 1i
+    So phuc 2: 3 - 4i
+    Tong: 4 - 3i
+    Tong: 4 - 3i
+    Hieu: -2 + 5i
+    Hieu: -2 + 5i
+
+Bạn có thể chạy thử ví dụ trên và ngồi ngẫm:))
+
+Ở đây khi tôi định nghĩa toán tử + cho việc cộng 2 số phức
+Code:
+    soPhuc operator+(soPhuc &sp1, soPhuc &sp2)
+    {
+        soPhuc sp;
+        sp.thuc = sp1.thuc + sp2.thuc;
+        sp.ao = sp1.ao + sp2.ao;
+        return sp;
+    }
+
+Như bình thường tôi phải tạo một hàm tính tổng hai số phức rồi gọi hàm tính tổng hai số phức như này
+    soPhuc tong = tongHaiSP(sp1, sp2);
+
+thì tôi chỉ cần đơn giản hóa nó bằng dấu +
+    soPhuc tong = sp1 + sp2;
+
+bạn có thể thấy đoạn code của tôi rất ngắn gọn và tường minh
+
+về bản chất cả 2 cách làm đều có chung một ý nghĩa là tính tổng 2 số phức
+nhưng thay vì phải đặt tên dài dòng là tongHaiSP(sp1, sp2)
+thì bây giờ bạn chỉ đơn giản là viết dấu cộng vào giữa 2 số phức cần tính:)) sp1 + sp2
+
+điều này sẽ giúp bạn dễ bảo trì cũng như người khác dễ đọc code của bạn hơn
+
+ví dụ bạn là ng Việt bạn viết là tongHaiSP thì ví dụ một ông người tung của sẽ chả hiểu đấy là gì:))
+ờm thì tất nhiên bạn có thể viết bằng tiếng anh nhưng mà bạn hiểu ý tôi chứ
+dấu + thì ở đâu cũng là dấu + thôi:))
+nó là ngôn ngữ toán học chung của toàn thế giới rùi mà:Đ
+
+bạn cũng có thể định nghĩa được các toán tử vào ra như >> <<
+Code:
+    // đa năng hóa toán tử << để in ra số phức
+    ostream& operator<<(ostream& out, const soPhuc& sp)
+    {
+        out << sp.thuc;
+        if (sp.ao >= 0)
+            out << " + " << sp.ao << "i\n";
+        else
+            out << " - " << -sp.ao << "i\n";
+        return out;
+    }
+
+// ostream là một lớp trong thư viện chuẩn C++ (<iostream>) dùng để xuất dữ liệu ra output stream, thường là màn hình console hoặc các thiết bị đầu ra khác
+nói chung là bạn có thể sử dụng đa năng hóa toán tử để làm cho code bạn clean hơn, quốc tế hơn:))
+
+bạn có thể tự so sánh hai phương thức này
+    // hàm in ra số phức
+    void inSoPhuc(soPhuc &sp)
+    {
+        cout << sp.thuc;
+        if(sp.ao >= 0)
+            cout << " + " << sp.ao << "i\n";
+        else
+            cout << " - " << -sp.ao << "i\n";
+    }
+    // đa năng hóa toán tử <<
+    ostream& operator<<(ostream& out, const soPhuc& sp)
+    {
+        out << sp.thuc;
+        if (sp.ao >= 0)
+            out << " + " << sp.ao << "i\n";
+        else
+            out << " - " << -sp.ao << "i\n";
+        return out;
+    }
+để thấy sự tiện lợi của việc đa năng hóa toán tử
+cùng 1 ý nghĩa nhưng 2 cách viết này
+C1
+    cout << "Tong: " << tong;
+C2
+    cout << "Tong: ";
+    inSoPhuc(tong);
+sẽ cho thấy sự gọn gàng, dễ đọc, dễ hiểu trong đoạn code của bạn :D
+
+
+1. Toán tử có thể đa năng hóa
+Toán tử số học
+    + : Cộng
+    - : Trừ
+    * : Nhân
+    / : Chia
+    % : Lấy phần dư
+Toán tử gán
+    = : Gán
+    += : Gán cộng
+    -= : Gán trừ
+    *= : Gán nhân
+    /= : Gán chia
+    %= : Gán lấy phần dư
+Toán tử so sánh
+    == : So sánh bằng
+    != : So sánh khác
+    < : So sánh nhỏ hơn
+    > : So sánh lớn hơn
+    <= : So sánh nhỏ hơn hoặc bằng
+    >= : So sánh lớn hơn hoặc bằng
+Toán tử logic
+    && : Và
+    || : Hoặc
+    ! : Phủ định
+Toán tử bitwise
+    & : Và
+    | : Hoặc
+    ^ : XOR
+    ~ : Phủ định bit
+    << : Dịch trái
+    >> : Dịch phải
+Toán tử con trỏ
+    * : Giải tham chiếu
+    -> : Truy cập thành viên qua con trỏ
+    ->*: Truy cập thành viên qua con trỏ tới thành viên
+Toán tử khác
+    [] : Truy cập chỉ số (index)
+    () : Gọi hàm
+    , : Toán tử phẩy
+    new : Cấp phát bộ nhớ
+    delete : Giải phóng bộ nhớ
+    new[] : Cấp phát bộ nhớ cho mảng
+    delete[] : Giải phóng bộ nhớ cho mảng
+Toán tử tăng/giảm
+    ++ : Tăng
+    -- : Giảm
+
+2. Toán tử không thể đa năng hóa
+Một số toán tử có chức năng cố định trong C++ và không thể được đa năng hóa:
+    :: : Toán tử phạm vi (scope resolution)
+    . : Toán tử truy cập thành viên
+    .* : Toán tử trỏ tới thành viên
+    sizeof : Toán tử lấy kích thước
+    typeid : Toán tử kiểm tra kiểu
+    alignof : Toán tử lấy độ căn chỉnh
+    noexcept : Kiểm tra ngoại lệ

@@ -1,0 +1,60 @@
+Khái quát hóa hàm (Function templates)
+
+Khi bạn có một hàm mà có nhiều kiểu dữ liệu trả về khác nhau
+thì bạn sẽ dùng overloading đúng không?
+Bạn sẽ phải viết đi viết lại rất nhiều hàm giống nhau và chỉ khác kiểu dữ liệu vào ra
+
+Nhưng hôm nay tôi sẽ giới thiệu với bạn một cách viết ngắn gọn dễ đọc dễ hiểu
+
+Ví dụ muốn tìm giá trị lớn nhất trong hai số:
+
+Đối với hai số nguyên:
+int maxVal(int x, int y){
+    return (x > y) ? x : y;
+}
+
+Đối với hai số thực:
+double maxVal(double x, double y){
+    return (x > y) ? x : y;
+}
+
+Ở ví dụ trên bạn phải viết 2 hàm maxVal cho số nguyên và số thực đúng không
+Nhưng khi bạn khái quát hóa hàm thì mọi chuyện sẽ đơn giản hơn
+
+Code:
+    #include <iostream>
+    using namespace std;
+
+    template <typename dat>
+    dat maxVal(dat x, dat y)
+    {
+        return (x > y) ? x : y;
+    }
+
+    int main()
+    {
+        int a, b;
+        cout << "a = ";
+        cin >> a;
+        cout << "b = ";
+        cin >> b;
+        cout << maxVal(a, b);
+        return 0;
+    }
+Output:
+    a = 2
+    b = 4
+    4
+
+Bạn hãy chạy thử đoạn code trên và thử với các kiểu dữ liệu khác nhau:))
+
+Cú pháp:
+    template < parameter-list > function-declaration
+
+template <typename dat>
+dat maxVal(dat x, dat y)
+{
+    return (x > y) ? x : y;
+}
+
+với việc sử dụng template đoạn code của bạn sẽ rất ngắn gọn, dễ đọc, dễ bảo trì	
