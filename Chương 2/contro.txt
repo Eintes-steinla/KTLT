@@ -1,0 +1,255 @@
+* // toán tử lấy giá trị - toán tử giải tham chiếu hay tham chiếu ngược, tùy vào tài liệu sẽ có cách gọi khác nhau nhưng bạn cứ hiểu là toán tử lấy giá trị là được
+& // toán tử địa chỉ
+
+1. KHÁI NIỆM
+- Con trỏ cơ bản là một biến nên cũng có kiểu dữ liệu và giá trị
+- Giá trị mà con trỏ lưu lại là địa chỉ của 1 biến khác
+
+2. CÚ PHÁP
+- Khi khai báo biến con trỏ ta thêm dấu * vào trước tên biến
+- Cú pháp chung
+    data_type* ptr_name;
+VD: int* ptr;
+Code:
+    int n = 10;
+    cout << "Dia chi cua n: " << &n << endl;
+    int *ptr;
+    ptr = &N; // Gán địa chỉ của n cho ptr
+    cout << "Gia tri cua ptr: " << ptr << endl;
+Output:
+    Dia chi cua n : 0x6ffe1c
+    Gia tri cua ptr : 0x6ffe1c
+/* lưu ý không thể gán giá trị trực tiếp cho con trỏ
+   int *p;
+   *p = 10; // this is not correct. */
+
+- Khai báo nhiều con trỏ cùng kiểu dữ liệu
+    int *ptr1, *ptr2, *ptr3;
+/* lưu ý khi bạn khai báo int *ptr1, ptr2; thì máy tính sẽ hiểu ptr2 là biến int thay vì hiểu là con trỏ có kiểu dữ liệu int */
+- Mỗi biến trong chương trình đều được cấp phát vùng nhớ để lưu trữ giá trị của nó, ví dụ biến int sẽ được cấp phát 4 byte liên tiếp để lưu trữ và lấy địa chỉ của byte đầu tiên làm địa chỉ cho biến
+
+3. LẤY GIÁ TRỊ BIẾN TRỎ
+- Chúng ta có thể "tham chiếu ngược" một con trỏ, nghĩa là lấy giá trị của biến mà con trỏ đang trỏ vào bằng cách dùng pháp toán '*'
+Code:
+    int n = 10;
+    int *ptr = &n;
+    cout << "Gia tri cua ptr: " << *ptr;
+Output:
+    Gia tri cua ptr: 10
+// Con trỏ được dùng để lấy địa chỉ của biến nó trỏ vào, đồng thời cũng có thể lấy giá trị của biến đó
+
+4. NHIỀU CON TRỎ TRỎ VÀO MỘT BIẾN
+- Một biến có thể được trỏ tới bởi nhiều con trỏ, khi đó bạn có thể thông qua bất cứ 1 con trỏ nào để thay đổi giá trị của biến mà nó đang trỏ tới.
+Code:
+    int n = 1000;
+    int *ptr1 = &n; // ptr1 trỏ tới n
+    int *ptr2 = &n; // ptr2 trỏ tới n
+    int *ptr3 = ptr1; // Gán giá trị của ptr1 cho ptr3, tương tự gán &n cho ptr3
+    cout << "Gia tri cua 3 con tro : " << ptr1 << " " << ptr2 << " " << ptr3 << endl;
+    *ptr1 = 100; // n = 100
+    cout << "Gia tri cua N: " << N << endl;
+    *ptr2 = 200; // n = 200
+    cout << "Gia tri cua N: " << N << endl;
+    *ptr3 = 300; // n = 300
+    cout << *ptr1 << " " << *ptr2 << " " << *ptr3 << " " << n << endl;
+Output: 
+    Gia tri cua 3 con tro: 0x6ffe1c 0x6ffe1c 0x6ffe1c
+    Gia tri cua N: 100
+    Gia tri cua N: 200
+    300 300 300 300
+
+5. CÁC PHÉP TOÁN TRÊN CON TRỎ
+- Cộng hoặc trừ với 1 số nguyên n trả về 1 con trỏ cùng kiểu, là địa chỉ mới trỏ tới 1 đối tượng khác nằm cách đối tượng đang bị trỏ n phần tử
+Code:
+    int arr[] = {10, 20, 30, 40, 50};
+    int* ptr = arr; // Con trỏ 'ptr' trỏ tới phần tử đầu tiên của mảng
+    cout << "Giá trị tại ptr: " << *ptr << endl; // *ptr == 10
+    ptr = ptr + 2;
+    cout << "Giá trị tại ptr + 2: " << *ptr << endl; // *ptr == 30
+    ptr = ptr - 1;
+    cout << "Giá trị tại ptr - 1: " << *ptr << endl; // *ptr == 20
+Output:
+    Giá trị tại ptr: 10
+    Giá trị tại ptr + 2: 30
+    Giá trị tại ptr - 1: 20
+
+- Trừ 2 con trỏ cho ta khoảng cách (số phần tử) giữa 2 con trỏ
+Code:
+    int arr[] = {10, 20, 30, 40, 50};
+    int* ptr1 = &arr[1]; // Trỏ tới phần tử thứ 2 (giá trị 20)
+    int* ptr2 = &arr[4]; // Trỏ tới phần tử thứ 5 (giá trị 50)
+    int kc = ptr2 - ptr1;
+    cout << "Khoang cach giua ptr2 va ptr1 la: " << kc << endl;
+Output
+    Khoang cach giua ptr2 va ptr1 la: 3
+
+- KHÔNG có phép cộng, nhân, chia 2 con trỏ
+- Có thể dùng các phép gán, so sánh các con trỏ
+/* Chú ý ++ và -- có độ ưu tiên cao hơn * nên *p++ tương đương với *(p++) tức là tăng địa chỉ mà nó trỏ tới chứ không phải tăng giá trị mà nó chứa */
+
+6. CON TRỎ *void
+- Là con trỏ không định kiểu. Nó có thể trỏ tới bất kì một loại biến nào.
+- Thực chất một con trỏ void chỉ chứa một địa chỉ bộ nhớ mà không biết rằng tại địa chỉ đó có đối tượng kiểu dữ liệu gì.
+- Do đó không thể truy cập nội dung của một đối tượng thông qua con trỏ void.
+- Để truy cập được đối tượng thì trước hết phải ép kiểu biến trỏ void thành biến trỏ có định kiểu của kiểu đối tượng
+Code:
+    int x = 42;         // Một biến kiểu int
+    double y = 3.14;    // Một biến kiểu double
+    char z = 'A';       // Một biến kiểu char
+    void* ptr;          // Khai báo con trỏ kiểu void
+    // Trỏ tới biến x
+    ptr = &x;
+    cout << "Giá trị của x: " << *(static_cast<int*>(ptr)) << endl;
+    // Trỏ tới biến y
+    ptr = &y;
+    cout << "Giá trị của y: " << *(static_cast<double*>(ptr)) << endl;
+    // Trỏ tới biến z
+    ptr = &z;
+    cout << "Giá trị của z: " << *(static_cast<char*>(ptr)) << endl;
+Output:
+    Giá trị của x: 42
+    Giá trị của y: 3.14
+    Giá trị của z: A
+
+7. CON TRỎ VÀ MẢNG
+- int a[30]; // khai báo mảng a
+/* &a[0] là địa chỉ phần tử đầu tiên của mảng đó, đồng thời là địa chỉ của mảng */
+- Tuy vậy cần chú ý rằng mảng a là 1 hằng nên không thể dùng nó trong câu lệnh gán hay toán tử tăng, giảm như a++;
+- (a + 1) sẽ trỏ vào phần tử thứ 2 của mảng // a[1]
+- *(a + i) tương đương a[i]
+- Sử dụng con trỏ để duyệt mảng
+Code:
+    int arr[5] = {10, 20, 30, 40, 50};
+    int *ptr = arr; // Con trỏ trỏ tới phần tử đầu tiên của mảng
+
+    cout << "Giá trị của arr[0]: " << arr[0] << endl; // 10
+    cout << "Giá trị của *ptr: " << *ptr << endl;     // 10
+
+    // Truy cập các phần tử mảng bằng cách dịch chuyển con trỏ
+    cout << "Giá trị của *(ptr + 1): " << *(ptr + 1) << endl; // 20
+    cout << "Giá trị của *(ptr + 2): " << *(ptr + 2) << endl; // 30
+Output:
+    Giá trị của arr[0]: 10
+    Giá trị của *ptr: 10
+    Giá trị của *(ptr + 1): 20
+    Giá trị của *(ptr + 2): 30
+
+7. CON TRỎ VÀ XÂU
+Ta có:
+    char tinhthanh[30] = "Ha Long";
+Tương đương:
+    char *tinhthanh;
+    tinhthanh = "Ha Long";
+// Các thao tác trên xâu cũng tương tự như trên mảng vì bản chất xâu là mảng các kí tự
+Ngoài ra có thể khai báo như dưới đây nhưng không ai làm như z cả vì rất mất tg:))
+// char tinhthanh[30] = {'H', 'a', ' ', 'L', 'o', 'n', 'g', '\0'};
+
+8. HÀM VÀ CON TRỎ
+- Bạn có một hàm gì đó và bạn muốn truyền đối số vào hàm, sau khi thực thi hàm thì hàm sẽ trả về giá trị đã được thay đổi?
+  Nhưng bạn lại thay đổi giá trị của 1 biến sau khi hàm kết thúc bằng cách truyền giá trị, không hợp lý tí nào đúng không:))
+- Đừng lo vì đã có con trỏ:))
+- Trong C++ có Truyền tham chiếu - Pass by reference rất nhanh và tiện nhưng mà vì tôi đang giới thiệu về con trỏ nên ta sẽ bỏ qua phần này:Đ
+- Thay đổi giá trị của biến thông qua con trỏ
+Code:
+    void change(int *x) {
+	cout << "Gia tri cua con tro x : " << x << endl;
+	cout << "Gia tri cua bien ma x đang tro toi : " << *x << endl;
+	//Đây là tham chiếu tới giá trị của biến
+	//mà con trỏ x đang trỏ tới để thay đổi nó thành 1000
+	*x = 1000;
+    }
+    int main() {
+	int n = 28;
+	cout << "Dia chi cua n: " << &n << endl;
+	change(&n); // truyền địa chỉ của n vào
+	cout << "Gia tri cua n: " << n << endl;
+ 	return 0;
+    }
+Output:
+    Dia chi cua n: 0x6ffe1c
+    Gia tri cua con tro x: 0x6ffe1c
+    Gia tri cua bien ma x đang tro toi: 28
+    Gia tri cua n: 1000
+
+9. MẢNG CÁC CON TRỎ
+- Mảng các con trỏ trong C và C++ là một cấu trúc dữ liệu mà mỗi phần tử trong mảng là một con trỏ
+- Cú pháp
+    data_type* array_name[size];
+Ví dụ:
+    int* ptrArr[3];
+
+- Mảng các con trỏ trỏ đến các biến
+Code:
+    int a = 10, b = 20, c = 30;
+    int* ptrArr[3];
+    // Lưu địa chỉ của các biến vào mảng
+    ptrArr[0] = &a;
+    ptrArr[1] = &b;
+    ptrArr[2] = &c;
+    // Truy cập giá trị thông qua mảng các con trỏ
+    for (int i = 0; i < 3; i++) {
+        cout << "Giá trị của biến thứ " << i + 1 << ": " << *(ptrArr[i]) << endl;
+    }
+Output:
+    Giá trị của biến thứ 1: 10
+    Giá trị của biến thứ 2: 20
+    Giá trị của biến thứ 3: 30
+
+- Mảng các con trỏ trỏ đến chuỗi
+Code:
+    const char* fruits[] = {"Apple", "Banana", "Cherry"};
+    // Truy cập và in các chuỗi
+    for (int i = 0; i < 3; i++) {
+        cout << "Fruit " << i + 1 << ": " << fruits[i] << endl;
+    }
+Output:
+    Fruit 1: Apple
+    Fruit 2: Banana
+    Fruit 3: Cherry
+
+- Mảng các con trỏ hàm
+Code:
+    int add(int a, int b) { return a + b; }
+    int subtract(int a, int b) { return a - b; }
+    int multiply(int a, int b) { return a * b; }
+
+    int main() {
+        // Mảng các con trỏ hàm
+        int (*funcArr[])(int, int) = {add, subtract, multiply};
+        // Gọi các hàm thông qua mảng con trỏ
+        cout << "Tổng: " << funcArr[0](5, 3) << endl; // Gọi hàm add
+        cout << "Hiệu: " << funcArr[1](5, 3) << endl; // Gọi hàm subtract
+        cout << "Tích: " << funcArr[2](5, 3) << endl; // Gọi hàm multiply
+        return 0;
+    }
+Output:
+    Tổng: 8
+    Hiệu: 2
+    Tích: 15
+
+10. CON TRỎ TRỎ TỚI CON TRỎ
+- Bản thân con trỏ cũng là một biến, vì vậy nó cũng có địa chỉ và có thể dùng một con trỏ khác để trỏ tới địa chỉ đó
+- Cú pháp
+   data_type **ptr_name;
+Ví dụ:
+   int n = 12;
+   int *ptr1 = &n;
+   int **ptr2 = &ptr1;
+- Có thể mô tả một mảng 2 chiều qua con trỏ của con trỏ theo công thức
+   M[i][k] = *(*(M + i) + k)
+Trong đó:
+   M+i là địa chỉ của phần tử thứ i của mảng
+   *(M + i) cho nội dung phần tử trên
+   *(M + i) + k là địa chỉ phần tử [i][k]
+
+11. BỘ NHỚ ĐỘNG
+- Việc dùng bộ nhớ động cho phép xác định bộ nhớ cần thiết trong quá trình thực hiện của chương trình
+  đồng thời giải phóng chúng khi không còn cần đến để dùng bộ nhớ cho việc khác
+- Trong C ta dùng các hàm malloc, calloc, realloc và free để xin cấp phát, tái cấp phát và giải phóng bộ nhớ
+- Trong C++ ta dùng new và delete
+- Toán tử new
+    data_type *ptr = new <data_type>;
+    data_type arr = new <data_type>[size];
+- Toán tử delete
+    delete ptr;      // Với biến đơn
+    delete[] arr;    // Với mảng
