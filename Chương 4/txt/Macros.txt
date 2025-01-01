@@ -1,0 +1,68 @@
+Macros trong C++
+
+1. Định nghĩa:
+    Macros trong C++ là một cơ chế thay thế văn bản được xử lý bởi bộ tiền xử lý (preprocessor) trước khi trình biên dịch thực thi mã.
+    Macros thường được sử dụng để định nghĩa các hằng số, viết các đoạn mã lặp lại hoặc thực hiện một số logic đơn giản mà không cần gọi hàm
+
+2. Cú pháp:
+Macros được định nghĩa bằng từ khóa #define trong C++.
+
+    #define macro_name replacement_text
+
+macro_name: Tên của macro.
+replacement_text: Văn bản sẽ thay thế cho macro khi được sử dụng.
+
+3. Các loại macros
+Macros hằng số: Sử dụng để định nghĩa các hằng số.
+    #define PI 3.14159
+    #define MAX 100
+
+Macros tham số (Function-like macros): Định nghĩa các đoạn mã hoạt động như hàm.
+    #define SQUARE(x) ((x) * (x))
+    int main() {
+        int num = 5;
+        cout << "Square:" << SQUARE(num) << endl;
+    }
+Khi gặp SQUARE(num), tiền xử lý sẽ thay thế thành ((num) * (num))
+
+Conditional Macros: Cho phép viết mã có điều kiện bằng các chỉ thị như #if, #ifdef, #ifndef, #else, #endif
+Code:
+    #define DEBUG
+    int main() {
+    #ifdef DEBUG
+        std::cout << "Debug mode is ON" << std::endl;
+    #else
+        std::cout << "Debug mode is OFF" << std::endl;
+    #endif
+        return 0;
+    }
+Kết quả (nếu #define DEBUG tồn tại):
+Output:
+    Debug mode is ON
+
+Undefining Macros: Bạn có thể hủy bỏ định nghĩa của macro bằng #undef.
+Code:
+    #define VALUE 10
+    #undef VALUE
+    int main() {
+        // std::cout << VALUE << std::endl; // Báo lỗi, vì VALUE đã bị hủy.
+        return 0;
+    }
+
+4. Ưu và nhược điểm của macros
+Ưu điểm:
+    Hiệu suất: Macros không yêu cầu thời gian chạy, vì chúng được xử lý tại giai đoạn tiền xử lý.
+    Đơn giản: Dễ dàng thay thế văn bản hoặc đoạn mã lặp lại.
+
+Nhược điểm:
+    Lỗi khó tìm: Vì macros là thay thế văn bản, lỗi có thể khó phát hiện.
+    Không kiểm tra kiểu (Type Safety): Function-like macros không kiểm tra kiểu dữ liệu, dẫn đến lỗi không mong muốn.
+
+5. Khi nào nên và không nên dùng macros
+Nên dùng:
+    Định nghĩa các hằng số đơn giản.
+    Viết mã lặp lại mà không cần tính năng nâng cao.
+
+Không nên dùng:
+    Với các đoạn mã phức tạp hoặc cần kiểm tra kiểu dữ liệu.
+    Thay vào đó, nên sử dụng const, constexpr, hoặc inline function.

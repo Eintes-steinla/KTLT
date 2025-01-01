@@ -1,0 +1,73 @@
+cách để tăng tốc chương trình của bạn:))
+
+Hàm nội tuyến (inline functions)
+
+Định nghĩa:
+    Trong C++, inline function là một hàm mà trình biên dịch cố gắng thay thế lời gọi hàm
+    bằng chính thân hàm tại vị trí gọi, thay vì thực hiện lời gọi hàm thông thường.
+    Điều này có thể giúp giảm chi phí của việc gọi hàm, như việc push/pop tham số và
+    quay lại địa chỉ trên ngăn xếp.
+
+Cú pháp:
+    inline return_type function_name(parameters)
+    {
+        /* code */
+    }
+
+inline: Từ khóa yêu cầu trình biên dịch cân nhắc hàm này để inline.
+return_type: Kiểu trả về của hàm.
+function_name: Tên của hàm.
+parameters: Danh sách các tham số
+
+Ý nghĩa:
+    Tăng hiệu năng: Bằng cách loại bỏ lời gọi hàm (function call),
+    chương trình có thể chạy nhanh hơn, đặc biệt với các hàm ngắn và được gọi nhiều lần.
+    Nhược điểm: Kích thước mã nguồn (code size) có thể tăng đáng kể
+    nếu một hàm inline được gọi nhiều lần trong chương trình lớn, gây hiệu ứng code bloat.
+
+Code:
+    #include <iostream>
+    using namespace std;
+
+    // Định nghĩa hàm inline
+    inline int square(int x)
+    {
+        return x * x;
+    }
+
+    int main()
+    {
+        int num = 5;
+        cout << "Square of " << num << " is " << square(num) << endl;
+        return 0;
+    }
+Giải thích:
+Khi trình biên dịch xử lý, lời gọi square(num) có thể được thay thế trực tiếp bằng num * num.
+    cout << "Square of " << num << " is " << (num * num) << endl;
+
+Trình biên dịch có thể không thực hiện nội tuyến ngay cả khi từ khóa inline được sử dụng trong các trường hợp như:
+    Hàm chứa vòng lặp (for, while, do-while).
+    Hàm chứa các biến tĩnh.
+    Hàm đệ quy.
+    Hàm chứa câu lệnh switch hoặc goto
+    Hàm của bạn quá lớn
+
+Hàm nội tuyến ngầm định:
+Các hàm được định nghĩa bên trong lớp (class) mặc định được coi là inline.
+Code:
+    class MyClass {
+    public:
+       int add(int a, int b) { return a + b; } // Inline mặc định
+    };
+
+Khi nào không nên dùng inline:
+    Với các hàm lớn hoặc phức tạp.
+    Nếu kích thước chương trình tăng đáng kể (code bloat).
+    Các hàm chứa vòng lặp hoặc đệ quy.
+
+Ưu điểm: Hiệu năng cao hơn (khi áp dụng đúng cách).
+Nhược điểm: Có thể tăng kích thước chương trình.
+
+Sẽ có những lúc bạn cần chú trọng tới tốc độ xử lý của chương trình
+và không cần chú trọng quá nhiều tới kích thước mã nguồn (code size)
+thì đó là lúc inline functions sẽ là sự lựa chọn thích hợp với bạn.

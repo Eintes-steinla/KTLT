@@ -1,0 +1,95 @@
+Biến tĩnh (static variables)
+
+1. Khái niệm
+Biến tĩnh là một biến có phạm vi truy cập cụ thể nhưng thời gian sống kéo dài suốt vòng đời của chương trình.
+Biến này được khai báo bằng từ khóa static và có các đặc điểm sau:
+    Trong hàm: Biến tĩnh giữ nguyên giá trị giữa các lần gọi hàm.
+    Trong lớp: Biến tĩnh là biến dùng chung giữa tất cả các đối tượng của lớp.
+    Biến toàn cục tĩnh: Chỉ có thể truy cập trong file chứa nó.
+
+2. Cú pháp
+Trong hàm:
+    Khi khai báo một biến tĩnh trong một hàm (bằng từ khóa static), biến này sẽ được cấp phát bộ nhớ chỉ một lần duy nhất và giữ nguyên giá trị giữa các lần gọi hàm.
+    Biến tĩnh trong hàm được khởi tạo một lần duy nhất khi chương trình chạy lần đầu, và nó không bị hủy sau khi hàm kết thúc.
+Code:
+    void demo() {
+        static int count = 0; // Biến tĩnh
+        count++;
+        std::cout << "Count: " << count << std::endl;
+    }
+    int main() {
+        demo(); // Count: 1
+        demo(); // Count: 2
+        demo(); // Count: 3
+        return 0;
+    }
+
+Trong lớp:
+    Biến tĩnh thuộc về lớp thay vì các đối tượng của lớp.
+    Mọi đối tượng của lớp đều dùng chung một bản sao của biến tĩnh.
+    Biến tĩnh được khai báo bằng từ khóa static trong lớp, nhưng phải được định nghĩa và cấp phát bộ nhớ bên ngoài lớp.
+Code:
+    #include <iostream>
+
+    class MyClass {
+    public:
+        static int count; // Khai báo biến tĩnh
+
+        MyClass() {
+            count++;
+        }
+
+        static void showCount() { // Hàm tĩnh
+            std::cout << "Count: " << count << std::endl;
+        }
+    };
+
+    // Định nghĩa và khởi tạo biến tĩnh
+    int MyClass::count = 0;
+
+    int main() {
+        MyClass a, b, c;
+        MyClass::showCount(); // Count: 3
+        return 0;
+    }
+
+Biến toàn cục tĩnh:
+    static int x = 10; // Chỉ truy cập được trong file này
+
+3. Tính chất của biến tĩnh
+    Phạm vi: Tùy thuộc vào nơi khai báo (hàm, lớp, toàn cục).
+    Thời gian sống: Sống đến khi chương trình kết thúc.
+    Bộ nhớ: Chỉ cấp phát một lần.
+
+4. Ứng dụng của biến tĩnh
+    Đếm số đối tượng của lớp.
+    Lưu trạng thái giữa các lần gọi hàm.
+    Chia sẻ dữ liệu giữa các đối tượng trong lớp.
+    Tăng hiệu suất khi dùng trong các tình huống không cần khởi tạo lại biến.
+
+5. Ý nghĩa
+    Lưu trữ trạng thái: Biến tĩnh duy trì giá trị giữa các lần gọi hàm.
+    Chia sẻ dữ liệu: Biến tĩnh trong lớp dùng để chia sẻ dữ liệu giữa các đối tượng của lớp.
+    Tối ưu hóa tài nguyên: Biến tĩnh được cấp phát một lần và tái sử dụng, giúp tiết kiệm tài nguyên.
+    Hạn chế phạm vi: Biến tĩnh toàn cục giới hạn phạm vi truy cập, tăng tính bảo mật trong file chứa nó.
+
+6. Ưu điểm
+    I. Hiệu quả sử dụng bộ nhớ:
+	Biến tĩnh chỉ được cấp phát một lần.
+	Giảm chi phí khởi tạo lại biến.
+    II. Duy trì giá trị:
+	Trong hàm, biến tĩnh không bị mất giá trị sau khi thoát khỏi phạm vi hàm.
+    III. Chia sẻ dữ liệu giữa các đối tượng:
+	Biến tĩnh trong lớp giúp các đối tượng sử dụng cùng một giá trị, tránh sao chép thừa.
+    VI. Tăng tính đóng gói:
+	Biến toàn cục tĩnh hạn chế phạm vi truy cập, bảo vệ dữ liệu.
+
+7.  Nhược điểm
+    I. Tăng thời gian sống của biến:
+	Biến tĩnh tồn tại suốt thời gian chương trình chạy, có thể gây lãng phí bộ nhớ nếu không cần thiết.
+    II. Khó kiểm soát trạng thái:
+	Nếu không được thiết kế cẩn thận, biến tĩnh có thể gây lỗi hoặc làm chương trình khó bảo trì.
+    III. Hạn chế trong tính đa luồng:
+	Khi biến tĩnh được sử dụng trong môi trường đa luồng, cần xử lý đồng bộ để tránh xung đột.
+    VI. Phạm vi truy cập hẹp:
+	Biến toàn cục tĩnh không thể chia sẻ giữa các file, cần các phương pháp khác (như con trỏ hoặc tham chiếu) để truy cập.

@@ -1,0 +1,52 @@
+Stack, Heap
+
+1. Stack (ngăn xếp)
+Đặc điểm:
+    Quản lý tự động:
+        Bộ nhớ stack được quản lý tự động bởi hệ thống.
+        Khi một biến cục bộ được khai báo trong một hàm, nó được cấp phát trên stack và tự động giải phóng khi hàm kết thúc.
+    Kích thước giới hạn:
+        Stack thường có kích thước giới hạn (thường vài MB), do đó không phù hợp cho việc lưu trữ dữ liệu lớn.
+    Tốc độ truy cập nhanh:
+        Vì stack được quản lý như một cấu trúc dữ liệu ngăn xếp (LIFO - Last In First Out), việc cấp phát và giải phóng bộ nhớ rất nhanh.
+    Phạm vi sử dụng:
+        Chỉ dùng cho các biến cục bộ, tham số hàm hoặc các đối tượng có thời gian sống ngắn.
+
+Cách hoạt động:
+Khi một hàm được gọi:
+    Bộ nhớ được cấp phát cho các biến cục bộ và tham số của hàm đó.
+    Khi hàm kết thúc, bộ nhớ trên stack được tự động giải phóng.
+
+Ví dụ:
+    void myFunction() {
+        int x = 10; // Biến x được cấp phát trên stack
+        int y = 20; // Biến y cũng nằm trên stack
+    } // Khi hàm kết thúc, x và y bị hủy tự động
+
+2. Heap (bộ nhớ động)
+Đặc điểm:
+    Quản lý thủ công:
+	Bộ nhớ heap cần được lập trình viên quản lý thủ công.
+	Bạn phải cấp phát và giải phóng bộ nhớ bằng cách sử dụng các từ khóa như new và delete.
+    Kích thước lớn:
+	Heap thường lớn hơn nhiều so với stack và có thể được sử dụng để lưu trữ dữ liệu lớn hoặc các đối tượng có thời gian sống dài.
+    Tốc độ truy cập chậm hơn:
+	Do việc quản lý và tìm kiếm bộ nhớ trên heap phức tạp hơn.
+    Phạm vi sử dụng:
+	Dùng cho các đối tượng hoặc biến cần thời gian sống linh hoạt, vượt ra ngoài phạm vi của một hàm.
+
+Cách hoạt động:
+    Bộ nhớ được cấp phát bằng từ khóa new và phải được giải phóng bằng từ khóa delete để tránh rò rỉ bộ nhớ (memory leak).
+    Nếu không giải phóng, bộ nhớ vẫn bị giữ lại dù không còn được sử dụng.
+
+Ví dụ:
+    void myFunction() {
+        int* p = new int(10); // Cấp phát một biến int trên heap
+        // Sử dụng biến p
+        delete p; // Giải phóng bộ nhớ
+    }
+
+Lưu ý quan trọng:
+    Rò rỉ bộ nhớ (memory leak): Nếu bạn không giải phóng bộ nhớ trên heap, chương trình có thể tiêu tốn tài nguyên hệ thống và gây chậm hoặc treo.
+    Stack Overflow: Khi stack bị đầy (do gọi đệ quy quá sâu hoặc cấp phát quá nhiều biến cục bộ), chương trình có thể gặp lỗi stack overflow.
+    Smart Pointers: Trong C++, bạn có thể sử dụng smart pointers (như std::unique_ptr hoặc std::shared_ptr) để tự động quản lý bộ nhớ trên heap, tránh quên giải phóng bộ nhớ

@@ -1,0 +1,183 @@
+1. Khởi tạo một lần dùng nhiều lần
+Before:
+    float f()
+    {
+        double value = sin(0.25);
+        /* code */
+    }
+After:
+    double defaultValue = sin(0.25);
+    float f()
+    {
+        double value = defaultValue;
+	/* code */
+    }
+
+2. Tính toán trước các giá trị
+    Nếu bạn phải tính đi tính lại 1 biểu thức, thì
+    nên tính trước 1 lần và lưu lại giá trị, rồi dùng
+    giá trị ấy sau này
+
+Before:
+    int f(int i){
+        if (i < 10 && i >= 0){
+            return i * i - i;
+        }
+        return 0;
+    }
+After:
+    static int[] values = {0, 0, 2,3*3-3, ..., 9*9-9};
+    int f(int i){
+        if (i < 10 && i >= 0)
+            return values[i];
+        return 0;
+    }
+
+3. Loại bỏ những biểu thức thông thường
+    Đừng tính cùng một biểu thức nhiều lần!
+    Một số compilers có thể nhận biết và xử lý
+
+Before:
+    for (i = 1; i<= 10; i++)
+	x += strlen(str);
+    Y = 15 + strlen(str);
+After:
+    len = strlen(str);
+	for (i = 1; I <= 10; i++) x += len;
+    Y = 15 + len;
+
+4. Sử dụng các biến đổi số học!
+    Trình dịch không thể tự động xử lý
+
+Before:
+    if (a > sqrt(b))
+        x = a*a + 3*a + 2;
+After:
+    if (a * a > b)
+        x = (a+1)*(a+2);
+
+5. Dùng “lính canh” -Tránh những kiểm tra không cần thiết
+Ý tưởng chung
+    Đặt giá trị cần tìm vào cuối
+    Luôn đảm bảo tìm thấy giá trị cần tìm.
+    Nhưng nếu vị trí >= size nghĩa là không tìm thấy!
+
+6. Dịch chuyển những biểu thức bất biến ra khỏi vòng lặp
+    Đừng lặp các biểu thức tính toán không cần thiết
+    Một số Compilers có thể tự xử lý!
+Before:
+    for (i =0; i<100;i++)
+        plot(i, i*sin(d));
+After:
+    M = sin(d);
+    for (i =0; i<100;i++)
+	plot(i, i*M);
+
+7. Không dùng các vòng lặp ngắn
+Before:
+    for (i =j; i<= j+3;i++)
+	sum += q*i -i*7;
+After:
+    i = j;
+    sum += q*i -i*7;
+    i ++;
+    sum += q*i -i*7;
+    i ++;
+    sum += q*i-i*7;
+
+các câu lệnh tuần tự sẽ xử lý nhanh hơn các câu lệnh điều kiện
+tuy nhiên nó sẽ làm giảm tính dễ đọc dễ hiểu của đoạn code
+
+8. Giảm thời gian tính toán
+    Tính Sigmoid
+
+9. Những quy tắc cơ bản
+    Đơn giản hóa Code – Code Simplification:
+	Hầu hết các chương trình chạy nhanh là đơn giản. Vì
+	vậy, hãy đơn giản hóa chương trình để nó chạy nhanh hơn.
+
+    Đơn giản hóa vấn đề - Problem Simplification:
+	Để tăng hiệu quả của chương trình, hãy đơn giản hóa vấn đề mà nó giải quyết.
+
+    Không ngừng nghi ngờ - Relentless Suspicion:
+	Đặt dấu hỏi về sự cần thiết của mỗi mẩu code và mỗi
+	trường, mỗi thuộc tính trong cấu trúc dữ liệu.
+
+    Liên kết sớm - Early Binding:
+	Hãy thực hiện ngay công việc để tránh thực hiện nhiều lần sau này
+
+10. Quy tắc tăng tốc độ
+    Có thể tăng tốc độ bằng cách sử dụng thêm bộ nhớ (mảng).
+    Dùng thêm các dữ liệu có cấu trúc
+    Lưu các kết quả được tính trước
+
+Quy tắc tăng tốc độ: cont.
+    Caching:
+        Dữ liệu thường dùng cần phải dễ tiếp cận nhất, luôn hiện hữu.
+    Lazy Evaluation:
+        Không bao giờ tính 1 phần tử cho đến khi cần để tránh những sự tính toán không cần thiết
+
+11. Quy tắc lặp: Loop Rules
+    Những điểm nóng - Hot spots trong phần lớn các chương trình đến từ các vòng lặp:
+    Đưa Code ra khỏi các vòng lặp:
+	Thay vì thực hiện việc tính toán trong mỗi lần lặp,
+	tốt nhất thực hiện nó chỉ một lần bên ngoài vòng lặp- nếu được.
+
+    Kết hợp các vòng lặp – loop fusion:
+	Nếu 2 vòng lặp gần nhau cùng thao tác trên cùng 1
+	tập hợp các phần tử thì cần kết hợp chung vào 1 vòng lặp.
+
+    Kết hợp các phép thử - Combining Tests:
+	Trong vòng lặp càng ít kiểm tra càng tốt và tốt nhất chỉ
+	một phép thử. Lập trình viên có thể phải thay đổi điều
+	kiện kết thúc vòng lặp. “Lính gác” hay “Vệ sĩ” là một ví
+	dụ cho quy tắc này.
+
+    Loại bỏ Loop:
+	Với những vòng lặp ngắn thì cần loại bỏ vòng lặp, tránh
+	phải thay đổi và kiểm tra điều kiện lặp
+
+12. Procedure Rules
+    Khai báo những hàm ngắn và đơn giản (thường chỉ 1 dòng) là inline
+	Tránh phải thực hiện 4 bước khi hàm được gọi
+	Tránh dùng bộ nhớ stack
+
+13. Optimizing C and C++ Code
+    Đặt kích thước mảng = bội của 2
+	Với mảng, khi tạo chỉ số, trình dịch thực hiện các phép nhân,
+	vì vậy, hãy đặt kích thước mảng bằng bội số của 2 để phép nhân có
+	thể được chuyển thành phép toán dịch chuyển nhanh chóng
+
+    Đặt các giá trị case của lệnh switch trong phạm vi hẹp
+	trong trường hợp có thể, case nào dễ hơn cho lên trước
+	với một số phép toán ví dụ như phép || ta có thể đặt đk dễ kiểm tra hơn lên trước
+
+    Đặt các trường hợp thường gặp trong lệnh switch lên đầu
+	Nếu bố trí các case thường gặp lên trên, việc thực hiện sẽ nhanh hơn
+
+    Tái tạo các switch lớn thành các switches lồng nhau
+	Khi số cases nhiều, hãy chủ động chia chúng thành các switch lồng nhau, nhóm 1 gồm những cases
+	thường gặp, và nhóm 2 gồm những cases ít gặp. Khi đó số phép thử sẽ ít hơn, tốc độ nhanh hơn
+
+    Hạn chế số lượng biến cục bộ
+
+    Khai báo các biến cục bộ trong phạm vi nhỏ nhất
+
+    Hạn chế số tham số của hàm
+
+    Với các tham số và giá trị trả về lớn hơn 4 byte, hãy dùng tham chiếu
+
+    Không định nghĩa giá trị trả về nếu không sử dụng (void)
+
+    Nên dùng int thay vì char hay short (mất thời gian convert), nếu biết int không âm, hãy dùng unsigned int
+
+    Hãy định nghĩa các hàm khởi tạo đơn giản
+
+    Thay vì gán, hãy khởi tạo giá trị cho biến
+
+    Hãy dùng danh sách khởi tạo trong hàm khởi tạo
+
+    Đừng định nghĩa các hàm ảo tùy hứng: "just in case" virtual functions
+
+    Các hàm gồm 1 đến 3 dòng lệnh nên định nghĩa inline
+
