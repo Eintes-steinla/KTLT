@@ -3,33 +3,33 @@
 ## 1. Nhắc lại các cấu trúc dữ liệu cơ bản
 
 mảng và danh sách liên kết
-![alt text](arrlinkedlist.png)
+![alt text](./img/arrlinkedlist.png)
 mảng 1, 2 chiều
 dslk đơn, đôi
 
 ngăn xếp (stack) - last-in-first-out (LIFO)
-![alt text](stack.png)
+![alt text](./img/stack.png)
 
 hàng đợi (queue) - first-in-first-out (FIFO)
-![alt text](queue.png)
+![alt text](./img/queue.png)
 hàng đợi 2 đầu (deque)
 
 ## 2. Giới thiệu thư viên STL và cách sử dụng các cấu trúc cơ bản
 
-![alt text](stl.png)
+![alt text](./img/stl.png)
 
 STL container
-![alt text](stlcontainer.png)
-![alt text](stlcontainer2.png)
+![alt text](./img/stlcontainer.png)
+![alt text](./img/stlcontainer2.png)
 
 vector
-![alt text](vector.png)
-![alt text](vector2.png)
+![alt text](./img/vector.png)
+![alt text](./img/vector2.png)
 
 so sánh
-![alt text](compare.png)
+![alt text](./img/compare.png)
 
 kiểu dữ liệu array (kích thước cố định)
-![alt text](array.png)
+![alt text](./img/array.png)
 
 ## 3. Một số ví dụ ứng dụng
